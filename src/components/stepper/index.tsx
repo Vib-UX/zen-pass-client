@@ -147,7 +147,7 @@ export default function VerticalLinearStepper({
             functionName: 'crossChainMint',
             args: [
                 '0xCc8875ec14d4C9A6150D91B4d08836691c2aaB26',
-                'ipfs://test-token-uri',
+                ips,
                 '16281711391670634445',
                 1,
             ],
