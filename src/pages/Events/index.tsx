@@ -10,6 +10,7 @@ import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/cards';
 import StarWarsButton from '../../components/ui/startwar-btn';
 import { NavbarDemo } from '../../components/navbar/navbar-menu';
+import LineTabs, { tabs } from '../../components/ui/Tabs';
 interface Host {
     name: string;
     avatar: string;
@@ -66,7 +67,7 @@ export default function EventsListing() {
     const handleCheckoutEvent = (eventId: string) => {
         navigate(`/events/${eventId}`);
     };
-    const [activeStep, setActiveStep] = useState(0);
+    const [selected, setSelected] = useState<string>(tabs[0]);
     return (
         <div className="relative min-h-screen">
             <NavbarDemo />
@@ -81,35 +82,22 @@ export default function EventsListing() {
             </div>
 
             <div className="relative z-10 min-h-screen bg-transparent text-black p-4 sm:p-8 mt-3">
-                <div className="max-w-4xl mx-auto">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
+                <div className="max-w-4xl mx-auto mt-5">
+                    <div className="flex  justify-between items-start sm:items-center mb-6 sm:mb-8">
                         <h1 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-0">
-                            {activeStep === 0 ? 'Events' : 'Leaderboard'}
+                            {selected === 'Events' ? 'Events' : 'Leaderboard'}
                         </h1>
-                        <div className="bg-[#0c162c] rounded-lg p-1 w-fit ml-auto sm:w-auto">
-                            <Button
-                                onClick={() => setActiveStep(0)}
-                                variant="ghost"
-                                className="text-white w-1/2 sm:w-auto cursor-pointer relative z-10"
-                            >
-                                Events
-                            </Button>
-                            <Button
-                                onClick={() => setActiveStep(1)}
-                                variant="ghost"
-                                className="text-white w-1/2 sm:w-auto cursor-pointer relative z-10"
-                            >
-                                Leaderboard
-                            </Button>
-                        </div>
+                        <LineTabs
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
                     </div>
-
                     {/* Events container with timeline */}
                     <div className="space-y-6 sm:space-y-8">
-                        {activeStep === 0 ? (
+                        {selected === 'Events' ? (
                             <div className="relative">
                                 {/* Timeline line - positioned to align with dots */}
-                                <div className="absolute left-3 sm:left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#9640ff] via-[#9640ff]/50 to-transparent h-full"></div>
+                                <div className="absolute left-3 sm:left-3 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#cbf101] via-[#cbf101]/50 to-transparent h-full"></div>
 
                                 {/* Events list */}
                                 <div className="space-y-6 sm:space-y-8">
@@ -119,7 +107,7 @@ export default function EventsListing() {
                                             className="flex flex-col sm:flex-row gap-4 sm:gap-8 pl-8 sm:pl-10 relative"
                                         >
                                             {/* Timeline dot - positioned to align with the line */}
-                                            <div className="absolute left-0 top-3 sm:top-3 w-6 h-6 rounded-full bg-[#9640ff] border-2 border-white z-10"></div>
+                                            <div className="absolute left-0 top-3 sm:top-3 w-6 h-6 rounded-full bg-[#cbf101] border border-black z-10"></div>
 
                                             {/* Date Column */}
                                             <div className="flex sm:flex-col items-center sm:items-start sm:w-24">
@@ -138,7 +126,7 @@ export default function EventsListing() {
                                                             {/* Time and Status */}
                                                             <div className="flex items-center gap-2 mb-2">
                                                                 {event.isLive && (
-                                                                    <span className="text-[#9640ff] text-sm font-medium">
+                                                                    <span className="text-[#cbf101] text-sm font-medium">
                                                                         LIVE
                                                                     </span>
                                                                 )}
@@ -184,7 +172,7 @@ export default function EventsListing() {
                                                             )}
                                                             <div className="mt-4">
                                                                 {event.status ? (
-                                                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-500/10 text-[#9640ff]">
+                                                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-500/10 text-[#cbf101]">
                                                                         {
                                                                             event.status
                                                                         }
@@ -199,6 +187,7 @@ export default function EventsListing() {
                                                                                 event.slug
                                                                             )
                                                                         }
+                                                                        className="w-fit"
                                                                     />
                                                                 )}
                                                             </div>

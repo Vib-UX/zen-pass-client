@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ContractData } from '.';
-import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/cards';
 import MyModal from '../../components/ui/Modal';
+import StarWarsButton from '../../components/ui/startwar-btn';
 
 const Details = ({
     contract,
@@ -36,12 +36,12 @@ const Details = ({
                                 </span>
                             </div>
                         </div>
-                        <Button
+
+                        <StarWarsButton
+                            title={'View transaction history of the NFT'}
                             onClick={() => setIsOpen(true)}
-                            className="rounded-md bg-black/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
-                        >
-                            View transaction history of the NFT
-                        </Button>
+                            className="w-full"
+                        />
                     </div>
                 </CardContent>
             </Card>

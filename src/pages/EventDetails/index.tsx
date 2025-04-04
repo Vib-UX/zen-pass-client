@@ -58,7 +58,7 @@ export default function EventPage() {
                     <h1 className="text-3xl font-semibold mb-4">
                         {event.title}
                     </h1>
-                    <div className="bg-gray-50 p-8 rounded-3xl backdrop-blur-md border border-white/10 shadow-xl shadow-purple-500/5 hover:shadow-purple-500/10 hover:border-white/20 transition-all duration-300 group">
+                    <div className="bg-gray-50  border-zinc-800 p-8 rounded-3xl backdrop-blur-md border shadow-xl shadow-purple-500/5 hover:shadow-purple-500/10 hover:border-white/20 transition-all duration-300 group">
                         <p className="text-lg mb-2">
                             <span className="font-medium">Date:</span>{' '}
                             {event.date}
@@ -92,6 +92,7 @@ export default function EventPage() {
                     <StarWarsButton
                         title={' Verify for Event'}
                         onClick={handleVerification}
+                        className="w-fit"
                     />
 
                     <VerticalLinearStepper

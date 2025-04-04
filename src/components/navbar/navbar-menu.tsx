@@ -22,6 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import bgCol from '../../assets/bg-col.png';
 import { cn } from '../../lib/utils';
 import useGlobalStorage from '../../store';
+import BurgerMenu from '../Burger';
 const transition = {
     type: 'spring',
     mass: 0.5,
@@ -89,7 +90,7 @@ export const Menu = ({
     return (
         <nav
             onMouseLeave={() => setActive(null)}
-            className="relative  border border-transparent bg-gray-50  backdrop-blur-sm border-gray-200  shadow-xl flex items-center justify-between px-8 py-3 font-montserrat animate-glow-pulse"
+            className="relative  border border-transparent bg-gray-50  backdrop-blur-sm border-gray-200  shadow-xl flex items-center justify-between px-6 py-3 font-montserrat animate-glow-pulse"
         >
             <div
                 className="flex h-full items-center justify-center relative z-10 cursor-pointer"
@@ -183,7 +184,7 @@ function Navbar({ className }: { className?: string }) {
     };
     const { name } = useGlobalStorage();
     return (
-        <div className={cn(className)}>
+        <div className="z-40 relative">
             <Menu setActive={setActive}>
                 <img
                     src={bgCol}
@@ -234,13 +235,11 @@ function Navbar({ className }: { className?: string }) {
                                     <WalletDropdownDisconnect />
                                 </WalletDropdown>
                             </Wallet>{' '}
-                            <div className="text-black ml-4 font-semibold">
-                                Hi, {name}
-                            </div>
+                            <BurgerMenu name={name} />
                         </div>
                     )}
                 </div>
-            </Menu>
+            </Menu>{' '}
         </div>
     );
 }

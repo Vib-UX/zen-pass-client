@@ -150,7 +150,7 @@ const Leaderboard = () => {
                                             ].map((_, i) => (
                                                 <div
                                                     key={i}
-                                                    className="w-6 h-6 rounded-full bg-orange-400 border-2 border-white flex items-center justify-center"
+                                                    className="w-6 h-6 rounded-full bg-[#cbf101] border-2 border-white flex items-center justify-center"
                                                 >
                                                     <span className="text-white text-xs">
                                                         ★

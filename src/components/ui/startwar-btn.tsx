@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
+import { cn } from '../../lib/utils';
 
 interface Star {
     id: number;
@@ -12,9 +13,11 @@ interface Star {
 const StarWarsButton = ({
     onClick,
     title,
+    className,
 }: {
     onClick: () => void;
     title: string;
+    className?: string;
 }) => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     const [stars, setStars] = useState<Star[]>([]);
@@ -46,7 +49,10 @@ const StarWarsButton = ({
         <motion.button
             onClick={onClick}
             ref={buttonRef}
-            className="w-fit md:w-fit text-md relative overflow-hidden rounded-full border-2 border-[#9640ff] bg-black px-8 py-1 mb-3 mt-5 font-semibold text-[#9640ff] focus:outline-none"
+            className={cn(
+                className,
+                'text-md relative overflow-hidden rounded-full border-2 border-[#cbf101] bg-black px-8 py-1 mb-3 mt-5 font-semibold text-[#cbf101] focus:outline-none'
+            )}
             style={{
                 boxShadow:
                     '0 0 10px rgba(234, 179, 8, 0.5), 0 0 20px rgba(234, 179, 8, 0.3)',

@@ -1,7 +1,8 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { useAccount } from 'wagmi';
-import { ContractData } from '../../pages/MyEvents';
 import { useQuery } from '@tanstack/react-query';
+import { ContractData } from '../../pages/MyEvents';
+
 type Props = {
     items: {
         from: string;
@@ -10,92 +11,126 @@ type Props = {
         timestamp: string;
     }[];
 };
+
+type MyModalProps = {
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    contract: ContractData;
+    tokenId: string;
+};
+
 export default function MyModal({
     isOpen,
     setIsOpen,
     contract,
     tokenId,
-}: {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-    contract: ContractData;
-    tokenId: string;
-}) {
-    function close() {
-        setIsOpen(false);
-    }
+}: MyModalProps) {
     const { address } = useAccount();
+
     const fetchNFTHistory = async (): Promise<Props> => {
         const response = await fetch(
             'https://web3.nodit.io/v1/base/sepolia/nft/getNftTransfersByTokenId',
             {
                 method: 'POST',
                 headers: {
-                    'X-API-KEY': process.env.NODIT_API_KEY as string,
+                    'X-API-KEY': 'iKoqMCqN3rGxn4CIcAeG0NJP2nKjrlLs',
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     contractAddress: contract.address,
-                    tokenId: tokenId,
+                    tokenId,
                 }),
             }
         );
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
         return response.json();
     };
 
-    const nftHistory = useQuery<Props>({
-        queryKey: ['nftHistory'],
+    const { data, isLoading, isError } = useQuery<Props>({
+        queryKey: ['nftHistory', contract.address, tokenId],
         queryFn: fetchNFTHistory,
         enabled: !!address && isOpen,
     });
-    return (
-        <>
-            <Dialog
-                open={isOpen}
-                as="div"
-                className="relative z-10 focus:outline-none"
-                onClose={close}
-            >
-                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className="flex min-h-full items-center justify-center p-4">
-                        <DialogPanel
-                            transition
-                            className="mt-32 w-full max-w-xl h-[500px] overflow-y-auto rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
-                        >
-                            {nftHistory.isSuccess
-                                ? nftHistory.data.items.map((elem, index) => {
-                                      const date = new Date(
-                                          parseInt(elem.timestamp) * 1000
-                                      );
 
-                                      return (
-                                          <div key={index}>
-                                              <DialogTitle
-                                                  as="h3"
-                                                  className="text-base/7 font-medium text-black"
-                                              >
-                                                  From {elem.from} to {elem.to}
-                                              </DialogTitle>
-                                              <p className="mt-2 text-sm/6 text-black/50">
-                                                  Value : {elem.value}
-                                              </p>
-                                              <p className="mt-2 text-sm/6 text-black/50">
-                                                  Date : {date.toUTCString()}
-                                              </p>{' '}
-                                          </div>
-                                      );
-                                  })
-                                : 'loading'}
-                        </DialogPanel>
-                    </div>
+    return (
+        <Dialog
+            open={isOpen}
+            as="div"
+            className="relative z-10 focus:outline-none"
+            onClose={() => setIsOpen(false)}
+        >
+            <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-black/30 backdrop-blur-sm">
+                <div className="flex min-h-full items-center justify-center p-4">
+                    <DialogPanel className="mt-24 w-full max-w-xl rounded-2xl bg-white/90 p-6 shadow-xl ring-1 ring-black/10 backdrop-blur-xl overflow-y-auto max-h-[90vh]">
+                        <DialogTitle className="text-xl font-semibold text-black mb-4">
+                            NFT Transfer History
+                        </DialogTitle>
+
+                        {isLoading && (
+                            <p className="text-sm text-gray-500 text-center">
+                                Loading transfer history...
+                            </p>
+                        )}
+
+                        {isError && (
+                            <p className="text-sm text-red-500 text-center">
+                                Failed to fetch transfer history.
+                            </p>
+                        )}
+
+                        {data?.items.length === 0 && (
+                            <p className="text-sm text-gray-500 text-center">
+                                No transfer history found.
+                            </p>
+                        )}
+
+                        {data?.items.map((transfer, index) => {
+                            const date = new Date(
+                                parseInt(transfer.timestamp) * 1000
+                            );
+                            return (
+                                <div
+                                    key={index}
+                                    className="mb-4 rounded-lg border border-gray-200 bg-white p-4"
+                                >
+                                    <DialogTitle
+                                        as="h4"
+                                        className="text-base font-medium text-black"
+                                    >
+                                        From:
+                                        <span className="ml-1 font-mono text-blue-600">
+                                            {transfer.from}
+                                        </span>
+                                    </DialogTitle>
+
+                                    <p className="text-sm text-black">
+                                        To:
+                                        <span className="ml-1 font-mono text-green-600">
+                                            {transfer.to}
+                                        </span>
+                                    </p>
+
+                                    <p className="text-sm text-gray-700">
+                                        Value:
+                                        <span className="ml-1 font-semibold">
+                                            {transfer.value}
+                                        </span>
+                                    </p>
+
+                                    <p className="text-sm text-gray-500">
+                                        Date:
+                                        <span className="ml-1">
+                                            {date.toUTCString()}
+                                        </span>
+                                    </p>
+                                </div>
+                            );
+                        })}
+                    </DialogPanel>
                 </div>
-            </Dialog>
-        </>
+            </div>
+        </Dialog>
     );
 }

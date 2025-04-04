@@ -38,7 +38,7 @@ const WebcamBackground = () => {
 // 3D Model Component
 const NFTModel = () => {
     const modelRef: any = useRef();
-    const { scene } = useGLTF(''); // Load the 3D model
+    const { scene } = useGLTF('/nft.glb'); // Load the 3D model
 
     // Adjust position dynamically based on screen size
     const scale = window.innerWidth < 768 ? [3, 3, 3] : [1, 1, 1]; // Scale for mobile vs desktop

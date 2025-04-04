@@ -95,9 +95,7 @@ export default function VerticalLinearStepper({
             }
         }
     };
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+
     const handleARInvokation = async () => {
         setShowAR(true);
         const caller = await fetch(
@@ -112,7 +110,8 @@ export default function VerticalLinearStepper({
                     name: 'Eth Taipei 2025 POAP',
                     description:
                         'This is a POAP for Eth Taipei 2025 sponsered by Base Sepolia',
-                    image_uri: '',
+                    image_uri:
+                        'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png',
                     attributes: [
                         { trait_type: 'Event', value: 'Eth Taipei 2025' },
                         { trait_type: 'Sponser', value: 'Polygon' },
@@ -175,7 +174,9 @@ export default function VerticalLinearStepper({
                     <div className="relative">
                         <img src={image} alt="Captured Screenshot" />
                         <img
-                            src={''}
+                            src={
+                                'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png'
+                            }
                             alt="Overlay"
                             className="absolute top-0 right-1"
                             height={200}
@@ -255,9 +256,6 @@ export default function VerticalLinearStepper({
                         <Typography>
                             All steps completed - you&apos;re finished
                         </Typography>
-                        <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                            Reset
-                        </Button>
                     </Paper>
                 )}
             </Box>
