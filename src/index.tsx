@@ -3,14 +3,23 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './index.css';
-
-import Provider from './provider';
+import EventDetails from './pages/EventDetails';
+import EventsListing from './pages/Events';
 import HomePage from './pages/HomePage';
 
+import Provider from './provider';
 const router = createBrowserRouter([
     {
         path: '/',
         element: <HomePage />,
+    },
+    {
+        path: '/events',
+        element: <EventsListing />,
+    },
+    {
+        path: '/events/:eventId',
+        element: <EventDetails />,
     },
 ]);
 
