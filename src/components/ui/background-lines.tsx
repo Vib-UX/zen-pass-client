@@ -1,16 +1,11 @@
+'use client';
+import { cn } from '../../lib/utils';
+import { motion } from 'framer-motion';
+import React from 'react';
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import useGlobalStorage from '../../store';
-import { motion } from 'framer-motion';
-import { cn } from '../../lib/utils';
-import { GoogleLogin } from '@react-oauth/google';
-const pathVariants = {
-    initial: { strokeDashoffset: 800, strokeDasharray: '50 800' },
-    animate: {
-        strokeDashoffset: 0,
-        strokeDasharray: '20 800',
-        opacity: [0, 1, 1, 0],
-    },
-};
+
 export const BackgroundLines = ({
     children,
     className,
@@ -23,17 +18,22 @@ export const BackgroundLines = ({
     };
 }) => {
     return (
-        <div
-            className={cn(
-                'h-[20rem] md:h-screen w-full bg-white dark:bg-black',
-                className
-            )}
-        >
+        <div className={cn('h-screen w-full bg-gray-50', className)}>
             <SVG svgOptions={svgOptions} />
             {children}
         </div>
     );
 };
+
+const pathVariants = {
+    initial: { strokeDashoffset: 800, strokeDasharray: '50 800' },
+    animate: {
+        strokeDashoffset: 0,
+        strokeDasharray: '20 800',
+        opacity: [0, 1, 1, 0],
+    },
+};
+
 const SVG = ({
     svgOptions,
 }: {
@@ -143,6 +143,7 @@ const SVG = ({
         </motion.svg>
     );
 };
+
 export function BackgroundLinesDemo() {
     const navigate = useNavigate();
     const { setEmail, setName } = useGlobalStorage();
@@ -168,7 +169,7 @@ export function BackgroundLinesDemo() {
         }
     };
     return (
-        <BackgroundLines className="flex items-center justify-center w-full flex-col px-4 mt-[140px] md:mt-[0px] overflow-hidden relative">
+        <BackgroundLines className="flex items-center justify-center w-full flex-col px-4  overflow-hidden relative">
             {/* Background image with gradient overlay */}
             <div className="absolute inset-0 w-full">
                 <img
@@ -185,10 +186,10 @@ export function BackgroundLinesDemo() {
             </div>
 
             {/* Content */}
-            <section className="container mx-auto px-4 sm:px-6 py-8 sm:py-16 z-10 relative">
+            <section className="container mx-auto px-4  z-10 relative">
                 <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
                     <div className="inline-flex items-center justify-center">
-                        <div className="inline-block px-6 py-2 bg-[#f20007] rounded-full text-sm font-medium text-white backdrop-blur-sm shadow-lg shadow-blue-500/20">
+                        <div className="inline-block px-6 py-2 border-[#f20007] border-2 rounded-full text-sm font-medium text-black backdrop-blur-sm shadow-lg shadow-blue-500/20">
                             Introducing ZenPass
                         </div>
                     </div>

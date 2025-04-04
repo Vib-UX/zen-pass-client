@@ -116,6 +116,12 @@ export default function KeyFeatures() {
 
     const events = [
         {
+            title: 'Pragma Taipei',
+            date: 'April 3, 2025',
+            logo: '/placeholder.svg?height=80&width=80',
+            link: '#',
+        },
+        {
             title: 'ETHGlobal Taipei Happy Hour',
             date: 'April 3, 2025',
             logo: '/placeholder.svg?height=80&width=80',
@@ -141,124 +147,19 @@ export default function KeyFeatures() {
                     <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8">
                         Key Features
                     </h2>
-
-                    {/* Tab Selector */}
-                    <div className="flex justify-center gap-4 mb-12">
-                        <button
-                            onClick={() => setActiveTab('features')}
-                            className={`px-6 py-3 rounded-full transition-all ${
-                                activeTab === 'features'
-                                    ? 'bg-black text-white'
-                                    : 'bg-white text-gray-800 hover:bg-gray-100'
-                            }`}
-                        >
-                            Features
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('events')}
-                            className={`px-6 py-3 rounded-full transition-all ${
-                                activeTab === 'events'
-                                    ? 'bg-black text-white'
-                                    : 'bg-white text-gray-800 hover:bg-gray-100'
-                            }`}
-                        >
-                            Upcoming Events
-                        </button>
-                    </div>
                 </div>
 
-                {activeTab === 'features' ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                        {features.map((feature, index) => (
-                            <Feature
-                                key={index}
-                                icon={feature.icon}
-                                number={feature.number}
-                                title={feature.title}
-                                description={feature.description}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <>
-                        <div className="flex flex-wrap justify-center gap-4 mb-8">
-                            <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
-                                Check out our city guide{' '}
-                                <ArrowRight className="w-4 h-4 ml-1" />
-                            </div>
-                            <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
-                                Check out our side events{' '}
-                                <ArrowRight className="w-4 h-4 ml-1" />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {events.map((event, index) => (
-                                <div
-                                    key={index}
-                                    className={`bg-white rounded-xl overflow-hidden border border-gray-200 ${
-                                        event.background ? 'p-0' : 'p-6'
-                                    }`}
-                                >
-                                    {event.background ? (
-                                        <div className="relative h-80">
-                                            <img
-                                                src={
-                                                    event.background ||
-                                                    '/placeholder.svg'
-                                                }
-                                                alt={event.title}
-                                                className="object-cover"
-                                            />
-                                            <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-4">
-                                                <h3 className="text-xl font-bold text-white">
-                                                    {event.title}
-                                                </h3>
-                                                <div className="flex justify-between items-center mt-2">
-                                                    <span className="text-white/80">
-                                                        {event.date}
-                                                    </span>
-                                                    <button className="text-white">
-                                                        ✕
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="flex justify-center mb-4">
-                                                <img
-                                                    src={
-                                                        event.logo ||
-                                                        '/placeholder.svg'
-                                                    }
-                                                    alt={event.title}
-                                                    width={80}
-                                                    height={80}
-                                                />
-                                            </div>
-                                            <h3 className="text-xl font-bold text-center mb-2">
-                                                {event.title}
-                                            </h3>
-                                            <div className="bg-gray-200 text-gray-700 rounded-full px-4 py-2 text-center text-sm mb-6 w-fit mx-auto">
-                                                {event.date}
-                                            </div>
-                                            <div className="block bg-black text-white text-center py-3 rounded-xl hover:bg-gray-800 transition-colors">
-                                                Signup to attend
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="flex justify-center mt-8">
-                            <button className="border border-green-600 text-green-600 px-6 py-3 rounded-full hover:bg-green-50 transition-colors">
-                                Access more events
-                            </button>
-                        </div>
-                    </>
-                )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    {features.map((feature, index) => (
+                        <Feature
+                            key={index}
+                            icon={feature.icon}
+                            number={feature.number}
+                            title={feature.title}
+                            description={feature.description}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
