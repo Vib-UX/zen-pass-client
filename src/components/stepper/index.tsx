@@ -99,37 +99,37 @@ export default function VerticalLinearStepper({
 
     const handleARInvokation = async () => {
         setShowAR(true);
-        // const caller = await fetch(
-        //     'https://nft-pinata-service.onrender.com/create-nft',
-        //     {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             id: Math.floor(Math.random() * 90 + 10).toString(),
-        //             name: 'Eth Taipei 2025 POAP',
-        //             description:
-        //                 'This is a POAP for Eth Taipei 2025 sponsered by Base Sepolia',
-        //             image_uri:
-        //                 'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png',
-        //             attributes: [
-        //                 { trait_type: 'Event', value: 'Eth Taipei 2025' },
-        //                 { trait_type: 'Sponser', value: 'Polygon' },
-        //                 {
-        //                     trait_type: 'Location',
-        //                     value: location.latitude + ',' + location.longitude,
-        //                 },
-        //                 { trait_type: 'Category', value: 'POAP' },
-        //             ],
-        //         }),
-        //     }
-        // );
-        // const res = await caller.json();
-        // if (res.success) {
-        //     const data = res.metadataIPFSUrl.split('https://')[1];
-        //     setIps(data);
-        // }
+        const caller = await fetch(
+            'https://nft-pinata-service.onrender.com/create-nft',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: Math.floor(Math.random() * 90 + 10).toString(),
+                    name: 'Eth Taipei 2025 POAP',
+                    description:
+                        'This is a POAP for Eth Taipei 2025 sponsered by Base Sepolia',
+                    image_uri:
+                        'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png',
+                    attributes: [
+                        { trait_type: 'Event', value: 'Eth Taipei 2025' },
+                        { trait_type: 'Sponser', value: 'Polygon' },
+                        {
+                            trait_type: 'Location',
+                            value: location.latitude + ',' + location.longitude,
+                        },
+                        { trait_type: 'Category', value: 'POAP' },
+                    ],
+                }),
+            }
+        );
+        const res = await caller.json();
+        if (res.success) {
+            const data = res.metadataIPFSUrl.split('https://')[1];
+            setIps(data);
+        }
     };
 
     React.useEffect(() => {
