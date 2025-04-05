@@ -82,6 +82,17 @@ const ArComponent = ({
                         if (blob) {
                             const imageUrl = URL.createObjectURL(blob);
                             setImage(imageUrl);
+                            const formData = new FormData();
+                            formData.append('file', imageUrl);
+                            // const res = await fetch(
+                            //     'https://aiprocessor-production.up.railway.app/analyze-image',
+                            //     {
+                            //         method: 'POST',
+                            //         body: formData,
+                            //     }
+                            // );
+                            // const data = await res.json();
+                            // console.log(data);
                             setIsArOpen(false);
                             toast.dismiss('Physical footprints pushed onchain');
                         }
