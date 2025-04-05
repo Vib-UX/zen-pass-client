@@ -18,7 +18,7 @@ const WebcamBackground = () => {
                 top: 0,
                 left: 0,
                 width: '100%',
-                height: '90%',
+                height: '100%',
                 objectFit: 'cover',
                 zIndex: -1,
             }}
@@ -39,24 +39,30 @@ const WebcamBackground = () => {
 // 3D Model Component
 const NFTModel = () => {
     const modelRef: any = useRef();
-    const { scene } = useGLTF('/nft.glb'); // Load the 3D model
+    const { scene } = useGLTF('/nft.glb');
+    const [speed, setSpeed] = useState(0.01);
 
-    // Adjust position dynamically based on screen size
-    const scale = window.innerWidth < 768 ? [3, 3, 3] : [1, 1, 1]; // Scale for mobile vs desktop
+    const scale = window.innerWidth < 768 ? [1.5, 1.5, 1.5] : [1.5, 1.5, 1.5];
+    const position = window.innerWidth < 768 ? [1, 2, 0] : [3, 2, 0];
 
-    // Rotate the model for some animation
     useFrame(() => {
         if (modelRef.current) {
-            modelRef.current.rotation.y += 0.01; // Adjust rotation speed
+            modelRef.current.rotation.y += speed;
         }
     });
+
+    const handleClick = () => {
+        setSpeed(0.2); // Increase speed
+        setTimeout(() => setSpeed(0.01), 1000); // Reset after 1s
+    };
 
     return (
         <primitive
             ref={modelRef}
             object={scene}
             scale={scale}
-            position={[3, 1, 0]} // Position at top right
+            position={position}
+            onClick={handleClick}
         />
     );
 };
@@ -74,6 +80,7 @@ const ArComponent = ({
 }) => {
     const [isNftEnabled, setIsNftEnabled] = useState(false);
     const [isNftLoading, setIsNftLoading] = useState(false);
+
     const captureScreenshot = () => {
         const element = document.getElementById('capture-area');
         if (element) {
@@ -129,7 +136,6 @@ const ArComponent = ({
 
                             try {
                                 setIsNftLoading(true);
-
                                 setTimeout(() => {
                                     setIsNftLoading(false);
                                     setIsNftEnabled(true);
@@ -138,7 +144,7 @@ const ArComponent = ({
                                 console.error('Error uploading image:', error);
                             }
                         }
-                    }, 'image/png'); // Specify PNG format
+                    }, 'image/png');
                 })
                 .catch((err) =>
                     console.error('Error capturing screenshot:', err)
@@ -147,23 +153,24 @@ const ArComponent = ({
     };
 
     useEffect(() => {
-        const timeout = setTimeout(generateImageFromApi, 4000); // Delay to ensure everything is rendered
-        return () => clearTimeout(timeout); // Cleanup on component unmount
+        const timeout = setTimeout(generateImageFromApi, 4000);
+        return () => clearTimeout(timeout);
     }, []);
 
     return (
         <div
             style={{
                 overflow: 'hidden',
-                position: 'relative',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
             }}
             id="capture-area"
             className="relative"
         >
-            {/* Webcam background */}
             <WebcamBackground />
-
-            {/* 3D Model Canvas */}
 
             <Canvas>
                 <ambientLight intensity={3} />
@@ -174,15 +181,22 @@ const ArComponent = ({
 
             {isNftLoading ? (
                 <div
-                    style={{ position: 'absolute', bottom: '30%', left: '20%' }}
+                    style={{
+                        position: 'absolute',
+                        bottom: '30%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                    }}
                 >
                     <WhirlpoolLoader />
                 </div>
             ) : (
                 <button
                     onClick={captureScreenshot}
-                    className="absolute left-40 bottom-0 bg-white size-10 rounded-full"
-                />
+                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white size-10 rounded-full"
+                >
+                    📸
+                </button>
             )}
         </div>
     );
