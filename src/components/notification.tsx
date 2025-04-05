@@ -49,7 +49,7 @@ export default function NotificationPanel() {
         <div className="relative z-30">
             <button
                 onClick={() => setOpen(!open)}
-                className="p-2 ml-3 rounded-full bg-gray-900 text-white hover:bg-gray-800 transition relative"
+                className="p-2 mx-3 rounded-full bg-gray-900 text-white hover:bg-gray-800 transition relative"
             >
                 <div className="relative">
                     <Bell className="w-5 h-5" />
