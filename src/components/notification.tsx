@@ -46,65 +46,67 @@ export default function NotificationPanel() {
                                     No notifications yet.
                                 </div>
                             ) : (
-                                data?.map((notif: any, idx: number) => {
-                                    const msg = notif.event?.messages?.[0];
-                                    return (
-                                        <div
-                                            key={idx}
-                                            className="flex items-start gap-3 p-4 hover:bg-gray-50 transition text-sm"
-                                        >
-                                            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
-                                                ⚡
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="font-semibold text-gray-800">
-                                                    {notif.description ||
-                                                        'New Webhook Triggered'}
+                                data
+                                    ?.slice?.(0, data.length - 3)
+                                    ?.map((notif: any, idx: number) => {
+                                        const msg = notif.event?.messages?.[0];
+                                        return (
+                                            <div
+                                                key={idx}
+                                                className="flex items-start gap-3 p-4 hover:bg-gray-50 transition text-sm"
+                                            >
+                                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold">
+                                                    ⚡
                                                 </div>
-                                                <div className="text-xs text-gray-500 mt-1">
-                                                    <span className="font-medium">
-                                                        Network:
-                                                    </span>{' '}
-                                                    {notif.network} (
-                                                    {notif.protocol})
-                                                </div>
-                                                {msg?.transaction_hash && (
-                                                    <div className="text-xs text-gray-500 mt-1 break-all">
-                                                        <span className="font-medium">
-                                                            Txn:
-                                                        </span>{' '}
-                                                        {msg.transaction_hash.slice(
-                                                            0,
-                                                            10
-                                                        )}
-                                                        ...
-                                                        {msg.transaction_hash.slice(
-                                                            -6
-                                                        )}
-                                                        <a
-                                                            href={
-                                                                notif.network ===
-                                                                'sepolia'
-                                                                    ? `https://sepolia.basescan.org/tx/${msg.transaction_hash}`
-                                                                    : `https://amoy.polygonscan.com/tx/${msg.transaction_hash}`
-                                                            }
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-blue-500 hover:underline ml-1"
-                                                        >
-                                                            View
-                                                        </a>
+                                                <div className="flex-1">
+                                                    <div className="font-semibold text-gray-800">
+                                                        {notif.description ||
+                                                            'Multichain transaction triggered'}
                                                     </div>
-                                                )}
-                                                <div className="text-xs text-gray-400 mt-2">
-                                                    {new Date(
-                                                        notif.createdAt
-                                                    ).toLocaleString()}
+                                                    <div className="text-xs text-gray-500 mt-1">
+                                                        <span className="font-medium">
+                                                            Network:
+                                                        </span>{' '}
+                                                        {notif.network} (
+                                                        {notif.protocol})
+                                                    </div>
+                                                    {msg?.transaction_hash && (
+                                                        <div className="text-xs text-gray-500 mt-1 break-all">
+                                                            <span className="font-medium">
+                                                                Txn:
+                                                            </span>{' '}
+                                                            {msg.transaction_hash.slice(
+                                                                0,
+                                                                10
+                                                            )}
+                                                            ...
+                                                            {msg.transaction_hash.slice(
+                                                                -6
+                                                            )}
+                                                            <a
+                                                                href={
+                                                                    notif.network ===
+                                                                    'sepolia'
+                                                                        ? `https://sepolia.basescan.org/tx/${msg.transaction_hash}`
+                                                                        : `https://amoy.polygonscan.com/tx/${msg.transaction_hash}`
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-500 hover:underline ml-1"
+                                                            >
+                                                                View
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    <div className="text-xs text-gray-400 mt-2">
+                                                        {new Date(
+                                                            notif.createdAt
+                                                        ).toLocaleString()}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
+                                        );
+                                    })
                             )}
                         </div>
                     </motion.div>
