@@ -118,7 +118,6 @@ const ArComponent = ({
 
     const generateImageFromApi = () => {
         const element = document.getElementById('capture-area');
-
         if (element) {
             html2canvas(element)
                 .then((canvas) => {
@@ -129,8 +128,8 @@ const ArComponent = ({
                             formData.append(
                                 'location_coordinates',
                                 JSON.stringify([
-                                    location.latitude.toString(),
-                                    location.longitude.toString(),
+                                    location.latitude,
+                                    location.longitude,
                                 ])
                             );
 

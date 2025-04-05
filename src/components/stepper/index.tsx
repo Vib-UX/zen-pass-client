@@ -8,10 +8,8 @@ import {
     TransactionStatusLabel,
 } from '@coinbase/onchainkit/transaction';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
-import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
@@ -71,8 +69,8 @@ export default function VerticalLinearStepper({
         const location = await getUserLocation();
         if (location) {
             const distance = calculateDistance({
-                lat1: location.latitude, //event
-                lon1: location.longitude, //event
+                lat1: 25.044492716107946, //event
+                lon1: 121.55989836222534, //event
                 lat2: location.latitude,
                 lon2: location.longitude,
             });
