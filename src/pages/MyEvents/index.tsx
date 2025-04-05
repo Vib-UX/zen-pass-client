@@ -1,49 +1,73 @@
 import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { NavbarDemo } from '../../components/navbar/navbar-menu';
-import Details from './Details';
-import React from 'react';
-import StarWarsButton from '../../components/ui/startwar-btn';
-import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
+import Details from './Details';
 export type ContractData = {
     name: string;
     symbol: string;
     address: string;
+    chain: string;
 };
-type NFTData = {
-    items: Array<{
-        contract: ContractData;
-        tokenId: string;
-    }>;
-};
+
 const MyEvents = () => {
     const { address } = useAccount();
+    const fetchNFTs = async (): Promise<{ items: any[] }> => {
+        if (!address) throw new Error('No address provided');
 
-    const fetchNFTs = async (): Promise<NFTData> => {
-        const response = await fetch(
-            'https://web3.nodit.io/v1/base/sepolia/nft/getNftsOwnedByAccount',
-            {
+        const fetchNftsByChain = async (
+            chain: 'polygon' | 'base',
+            network: 'amoy' | 'sepolia'
+        ) => {
+            const url = `https://web3.nodit.io/v1/${chain}/${network}/nft/getNftsOwnedByAccount`;
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-API-KEY': 'iKoqMCqN3rGxn4CIcAeG0NJP2nKjrlLs',
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    accountAddress: address,
-                }),
+                body: JSON.stringify({ accountAddress: address }),
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    `Error fetching NFTs from ${chain}/${network}: ${response.status}`
+                );
             }
-        );
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-        }
+            return response.json(); // Make sure it returns an object with `items` or similar key
+        };
 
-        return response.json();
+        const [polygonData, baseData] = await Promise.all([
+            fetchNftsByChain('polygon', 'amoy'),
+            fetchNftsByChain('base', 'sepolia'),
+        ]);
+
+        // Flatten both item arrays (assumes response has `.items` array)
+        const polygonItems = polygonData?.items || [];
+        const baseItems = baseData?.items || [];
+
+        return {
+            items: [
+                ...polygonItems.map((item: any) => ({
+                    ...item,
+                    chain: 'polygon',
+                    network: 'amoy',
+                })),
+                ...baseItems.map((item: any) => ({
+                    ...item,
+                    chain: 'base',
+                    network: 'sepolia',
+                })),
+            ],
+        };
     };
 
-    const myEvents = useQuery<NFTData>({
+    const myEvents = useQuery({
         queryKey: ['nfts'],
         queryFn: fetchNFTs,
         enabled: !!address,
@@ -59,24 +83,6 @@ const MyEvents = () => {
                 />
             </div>
 
-            {/* <div className="min-h-screen bg-white text-black p-4 sm:p-8 mt-28 md:mt-36">
-                <div className="max-w-4xl mx-auto">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
-                        <h1 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-0">
-                            My Events
-                        </h1>
-                    </div>
-                    <div className="space-y-6 sm:space-y-8">
-                        {myEvents.isSuccess
-                            ? myEvents.data?.items.map((elem, index) => (
-                                  <React.Fragment key={index}>
-                                      <Details {...elem} />
-                                  </React.Fragment>
-                              ))
-                            : 'loading'}
-                    </div>
-                </div>
-            </div> */}
             <div className="relative z-10 min-h-screen bg-transparent text-black p-4 sm:p-8 mt-3">
                 <div className="max-w-4xl mx-auto">
                     <Link to={'/events'}>

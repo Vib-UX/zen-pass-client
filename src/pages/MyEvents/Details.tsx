@@ -6,11 +6,11 @@ import StarWarsButton from '../../components/ui/startwar-btn';
 
 const Details = ({
     contract,
-
+    chain,
     tokenId,
 }: {
     contract: ContractData;
-
+    chain: string;
     tokenId: string;
 }) => {
     let [isOpen, setIsOpen] = useState(false);
@@ -22,6 +22,7 @@ const Details = ({
                 setIsOpen={setIsOpen}
                 contract={contract}
                 tokenId={tokenId}
+                chain={chain}
             />
             <Card className="flex-1 border-zinc-800">
                 <CardContent className="p-2 sm:p-6">

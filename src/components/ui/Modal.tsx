@@ -17,6 +17,7 @@ type MyModalProps = {
     setIsOpen: (isOpen: boolean) => void;
     contract: ContractData;
     tokenId: string;
+    chain: string;
 };
 
 export default function MyModal({
@@ -24,33 +25,46 @@ export default function MyModal({
     setIsOpen,
     contract,
     tokenId,
+    chain,
 }: MyModalProps) {
     const { address } = useAccount();
 
-    const fetchNFTHistory = async (): Promise<Props> => {
-        const response = await fetch(
-            'https://web3.nodit.io/v1/base/sepolia/nft/getNftTransfersByTokenId',
-            {
-                method: 'POST',
-                headers: {
-                    'X-API-KEY': 'iKoqMCqN3rGxn4CIcAeG0NJP2nKjrlLs',
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contractAddress: contract.address,
-                    tokenId,
-                }),
-            }
-        );
+    const fetchNFTHistory = async ({
+        chain,
+        network,
+        contractAddress,
+        tokenId,
+    }: {
+        chain: 'polygon' | 'base';
+        network: 'amoy' | 'sepolia';
+        contractAddress: string;
+        tokenId: string | number;
+    }): Promise<Props> => {
+        const url = `https://web3.nodit.io/v1/${chain}/${network}/nft/getNftTransfersByTokenId`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-API-KEY': 'iKoqMCqN3rGxn4CIcAeG0NJP2nKjrlLs',
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ contractAddress, tokenId }),
+        });
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
         return response.json();
     };
 
     const { data, isLoading, isError } = useQuery<Props>({
-        queryKey: ['nftHistory', contract.address, tokenId],
-        queryFn: fetchNFTHistory,
+        queryKey: ['nftHistory'],
+        queryFn: () =>
+            fetchNFTHistory({
+                chain: chain === 'polygon' ? 'polygon' : 'base',
+                network: chain === 'polygon' ? 'amoy' : 'sepolia',
+                contractAddress: contract.address,
+                tokenId,
+            }),
         enabled: !!address && isOpen,
     });
 
