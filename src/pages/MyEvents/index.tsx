@@ -38,8 +38,7 @@ const MyEvents = () => {
                     `Error fetching NFTs from ${chain}/${network}: ${response.status}`
                 );
             }
-
-            return response.json(); // Make sure it returns an object with `items` or similar key
+            return response.json();
         };
 
         const [polygonData, baseData] = await Promise.all([
