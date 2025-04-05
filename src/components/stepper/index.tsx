@@ -21,6 +21,7 @@ import { baseSepolia } from 'viem/chains';
 import { ABI } from '../../abi';
 import { calculateDistance, getUserLocation } from '../../lib/helper';
 import Ar from '../Ar/index';
+import { useAccount } from 'wagmi';
 const steps = [
     { label: 'Email verification' },
     {
@@ -56,7 +57,7 @@ export default function VerticalLinearStepper({
         latitude: 0,
         longitude: 0,
     });
-
+    const { address } = useAccount();
     const [showAR, setShowAR] = React.useState(false);
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -145,12 +146,7 @@ export default function VerticalLinearStepper({
             address: `0x6E4ABFd299686793770DF3A299ECa496A3709c66`,
             abi: ABI,
             functionName: 'crossChainMint',
-            args: [
-                '0xCc8875ec14d4C9A6150D91B4d08836691c2aaB26',
-                ips,
-                '16281711391670634445',
-                1,
-            ],
+            args: [address, ips, '16281711391670634445', 1],
         },
     ];
     const handleOnStatus = React.useCallback((status: LifecycleStatus) => {
