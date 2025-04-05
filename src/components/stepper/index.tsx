@@ -7,7 +7,6 @@ import {
     TransactionStatusAction,
     TransactionStatusLabel,
 } from '@coinbase/onchainkit/transaction';
-import im from '../../assets/im.png';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
@@ -91,7 +90,6 @@ export default function VerticalLinearStepper({
             }
         }
     };
-
     const handleARInvokation = async () => {
         setShowAR(true);
         const caller = await fetch(
@@ -218,11 +216,13 @@ export default function VerticalLinearStepper({
                                 >
                                     (View on Chain)
                                 </a>
-                                <img
-                                    src={im}
-                                    alt="userImage"
-                                    className="py-3"
-                                />
+                                {userImage && (
+                                    <img
+                                        src={userImage}
+                                        alt="userImage"
+                                        className="py-3"
+                                    />
+                                )}
                                 <div className="w-fit  rounded-full border-2 border-[#cbf101 bg-green-100 px-3 text-sm py-1 my-2">
                                     <TwitterShareButton
                                         title="Catch the next wave at @polygon / @nodit booths! 🌊 I just snagged my POAP at Eth Taipei 2025 🚀 Let’s make history!"
@@ -253,7 +253,6 @@ export default function VerticalLinearStepper({
                         )}
                     </>
                 )}
-
                 {activeStep === steps.length && (
                     <Paper square elevation={0} sx={{ p: 3 }}>
                         <Typography>
