@@ -81,6 +81,8 @@ const ArComponent = ({
                         if (blob) {
                             const imageUrl = URL.createObjectURL(blob);
                             setImage(imageUrl);
+                            setIsArOpen(false);
+                            toast.dismiss('Physical footprints pushed onchain');
                             const d = new Blob([blob], {
                                 type: 'image/png',
                             });
@@ -96,8 +98,6 @@ const ArComponent = ({
                             );
                             const data = await res.json();
                             console.log(data);
-                            setIsArOpen(false);
-                            toast.dismiss('Physical footprints pushed onchain');
                         }
                     });
                 })

@@ -23,6 +23,7 @@ import bgCol from '../../assets/bg-col.png';
 import { cn } from '../../lib/utils';
 import useGlobalStorage from '../../store';
 import BurgerMenu from '../Burger';
+import NotificationPanel from '../notification';
 const transition = {
     type: 'spring',
     mass: 0.5,
@@ -239,6 +240,7 @@ function Navbar({ className }: { className?: string }) {
                         </div>
                     )}
                 </div>
+                <NotificationPanel />
             </Menu>{' '}
         </div>
     );

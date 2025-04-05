@@ -234,7 +234,7 @@ export default function VerticalLinearStepper({
                             <div className="font-semibold text-lg">
                                 Transaction success 🎉{' '}
                                 <a
-                                    href={`${hash}`}
+                                    href={`https://ccip.chain.link/tx/${hash}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="underline"
