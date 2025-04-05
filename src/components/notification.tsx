@@ -1,30 +1,65 @@
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bell } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function NotificationPanel() {
     const [open, setOpen] = useState(false);
+    const [hasNew, setHasNew] = useState(false);
+    const prevNotifRef = useRef<any[]>([]);
+
     const fetchNotifications = async () => {
         const res = await fetch(
             'https://nodit-server-production.up.railway.app/webhook'
         );
-
         const data = await res.json();
         return data;
     };
+
     const { data } = useQuery<any>({
         queryKey: ['notification'],
         queryFn: fetchNotifications,
         enabled: open,
     });
+
+    // Check for new notifications
+    useEffect(() => {
+        if (data && data.length > 0) {
+            const prev = prevNotifRef.current;
+
+            if (
+                prev.length &&
+                data[0]?.createdAt !== prev[0]?.createdAt // based on timestamp or you can use `id`
+            ) {
+                setHasNew(true);
+            }
+
+            prevNotifRef.current = data;
+        }
+    }, [data]);
+
+    // Reset new notification flag when opening the panel
+    useEffect(() => {
+        if (open) {
+            setHasNew(false);
+        }
+    }, [open]);
+
     return (
         <div className="relative z-30">
             <button
                 onClick={() => setOpen(!open)}
-                className="p-2 ml-3 rounded-full bg-gray-900 text-white hover:bg-gray-800 transition"
+                className="p-2 ml-3 rounded-full bg-gray-900 text-white hover:bg-gray-800 transition relative"
             >
-                <Bell className="w-5 h-5" />
+                <div className="relative">
+                    <Bell className="w-5 h-5" />
+                    {hasNew && (
+                        <>
+                            <span className="absolute top-0 right-0 block w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white animate-ping" />
+                            <span className="absolute top-0 right-0 block w-2.5 h-2.5 bg-red-500 rounded-full" />
+                        </>
+                    )}
+                </div>
             </button>
 
             <AnimatePresence>
