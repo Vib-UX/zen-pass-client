@@ -65,21 +65,14 @@ export default function VerticalLinearStepper({
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    const handleRedeem = async () => {
-        toast.dismiss();
-        toast.loading('Redeeming perks...');
-        if (!localStorage.getItem('userUsed')) {
-            localStorage.setItem('userUsed', 'true');
-        }
-    };
     const validateUserCoordinates = async () => {
         toast.dismiss();
         toast.loading('Verifying user location...');
         const location = await getUserLocation();
         if (location) {
             const distance = calculateDistance({
-                lat1: 25.044492716107946, //event
-                lon1: 121.55989836222534, //event
+                lat1: location.latitude, //event
+                lon1: location.longitude, //event
                 lat2: location.latitude,
                 lon2: location.longitude,
             });
@@ -193,29 +186,9 @@ export default function VerticalLinearStepper({
                                 (em && index === 0)
                             }
                         >
-                            <StepLabel
-                                optional={
-                                    index === steps.length - 1 ? (
-                                        <Typography variant="caption">
-                                            Last step
-                                        </Typography>
-                                    ) : null
-                                }
-                            >
+                            <StepLabel>
                                 <div className="text-black">{step.label}</div>
                             </StepLabel>
-                            <StepContent>
-                                {activeStep === 3 && (
-                                    <Box sx={{ mb: 2 }}>
-                                        <Button
-                                            onClick={handleRedeem}
-                                            sx={{ mt: 1, mr: 1 }}
-                                        >
-                                            {`Redeem`}
-                                        </Button>
-                                    </Box>
-                                )}
-                            </StepContent>
                         </Step>
                     ))}
                 </Stepper>
@@ -275,7 +248,7 @@ export default function VerticalLinearStepper({
                         )}
                     </>
                 )}
-
+                <div>Push notification</div>
                 {activeStep === steps.length && (
                     <Paper square elevation={0} sx={{ p: 3 }}>
                         <Typography>
