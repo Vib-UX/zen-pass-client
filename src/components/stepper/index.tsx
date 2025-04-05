@@ -120,7 +120,7 @@ export default function VerticalLinearStepper({
                         'https://res.cloudinary.com/dt1dn773q/image/upload/v1743853830/ncfhrexcmfvdps1yq1dp.png',
                     attributes: [
                         { trait_type: 'Event', value: 'Eth Taipei 2025' },
-                        { trait_type: 'Sponser', value: 'Polygon' },
+                        { trait_type: 'Sponser', value: 'Polygon & NodeIt' },
                         {
                             trait_type: 'Location',
                             value: location.latitude + ',' + location.longitude,
