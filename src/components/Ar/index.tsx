@@ -1,7 +1,7 @@
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import html2canvas from 'html2canvas';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import WhirlpoolLoader from '../ui/WhirlpoolLoader';
@@ -65,10 +65,12 @@ const ArComponent = ({
     location,
     setImage,
     setIsArOpen,
+    setUserImage,
 }: {
     location: any;
     setImage: (image: string | null) => void;
     setIsArOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setUserImage: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
     const [isNftEnabled, setIsNftEnabled] = useState(false);
     const [isNftLoading, setIsNftLoading] = useState(false);
@@ -90,14 +92,14 @@ const ArComponent = ({
                             const formData = new FormData();
                             formData.append('file', file);
                             const res = await fetch(
-                                'https://aiprocessor-production.up.railway.app/analyze-image',
+                                'https://aiprocessor-production.up.railway.app/analyze-image-anime',
                                 {
                                     method: 'POST',
                                     body: formData,
                                 }
                             );
                             const data = await res.json();
-                            console.log(data);
+                            setUserImage(data.result);
                         }
                     });
                 })
@@ -164,8 +166,8 @@ const ArComponent = ({
             {/* 3D Model Canvas */}
 
             <Canvas>
-                <ambientLight intensity={0.5} />
-                <directionalLight position={[0, 5, 5]} intensity={1} />
+                <ambientLight intensity={3} />
+                <directionalLight position={[0, 5, 5]} intensity={3} />
                 {isNftEnabled && <NFTModel />}
                 <OrbitControls />
             </Canvas>
@@ -190,10 +192,12 @@ const Ar = ({
     location,
     setIsArOpen,
     setImage,
+    setUserImage,
 }: {
     location: any;
     setIsArOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setImage: (image: string | null) => void;
+    setUserImage: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
     return (
         <div className="z-10 relative">
@@ -201,6 +205,7 @@ const Ar = ({
                 location={location}
                 setImage={setImage}
                 setIsArOpen={setIsArOpen}
+                setUserImage={setUserImage}
             />
         </div>
     );

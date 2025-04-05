@@ -17,16 +17,16 @@ import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import toast from 'react-hot-toast';
+import { TwitterIcon, TwitterShareButton } from 'react-share';
 import { baseSepolia } from 'viem/chains';
+import { useAccount } from 'wagmi';
 import { ABI } from '../../abi';
-import { TwitterShareButton, TwitterIcon } from 'react-share';
 import { calculateDistance, getUserLocation } from '../../lib/helper';
 import Ar from '../Ar/index';
-import { useAccount } from 'wagmi';
 const steps = [
     { label: 'Email verification' },
     {
-        label: 'You need to be within 500m of the event location to be able to verify',
+        label: 'You need to be within 1000m of the event location to be able to verify',
     },
     {
         label: 'NFT collected successfully from booth',
@@ -58,6 +58,7 @@ export default function VerticalLinearStepper({
         latitude: 0,
         longitude: 0,
     });
+    const [userImage, setUserImage] = React.useState<string | null>(null);
     const { address } = useAccount();
     const [showAR, setShowAR] = React.useState(false);
     const handleNext = () => {
@@ -67,8 +68,6 @@ export default function VerticalLinearStepper({
     const handleRedeem = async () => {
         toast.dismiss();
         toast.loading('Redeeming perks...');
-        const location = await getUserLocation();
-        console.log(location);
         if (!localStorage.getItem('userUsed')) {
             localStorage.setItem('userUsed', 'true');
         }
@@ -77,7 +76,6 @@ export default function VerticalLinearStepper({
         toast.dismiss();
         toast.loading('Verifying user location...');
         const location = await getUserLocation();
-        console.log(location);
         if (location) {
             const distance = calculateDistance({
                 lat1: 25.044492716107946, //event
@@ -169,6 +167,7 @@ export default function VerticalLinearStepper({
                         location={location}
                         setIsArOpen={setShowAR}
                         setImage={setImage}
+                        setUserImage={setUserImage}
                     />
                 ) : image ? (
                     <div className="relative">
@@ -259,7 +258,10 @@ export default function VerticalLinearStepper({
                                             '@NoditPlatform',
                                             '@0xPolygon',
                                         ]}
-                                        url={`https://zen-pass.vercel.app`}
+                                        url={
+                                            userImage ||
+                                            'https://zen-pass.vercel.app'
+                                        }
                                         className="flex items-center gap-x-2"
                                     >
                                         Share on Twitter{' '}
