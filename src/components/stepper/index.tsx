@@ -19,6 +19,7 @@ import * as React from 'react';
 import toast from 'react-hot-toast';
 import { baseSepolia } from 'viem/chains';
 import { ABI } from '../../abi';
+import { TwitterShareButton, TwitterIcon } from 'react-share';
 import { calculateDistance, getUserLocation } from '../../lib/helper';
 import Ar from '../Ar/index';
 import { useAccount } from 'wagmi';
@@ -76,13 +77,17 @@ export default function VerticalLinearStepper({
         toast.dismiss();
         toast.loading('Verifying user location...');
         const location = await getUserLocation();
-
+        console.log(location);
         if (location) {
             const distance = calculateDistance({
                 lat1: location.latitude, //event
                 lon1: location.longitude, //event
                 lat2: location.latitude,
                 lon2: location.longitude,
+            });
+            setLocation({
+                latitute: location.latitude,
+                longitude: location.longitude,
             });
             if (distance <= 500) {
                 toast.dismiss();
@@ -112,7 +117,7 @@ export default function VerticalLinearStepper({
                     description:
                         'This is a POAP for Eth Taipei 2025 sponsered by Base Sepolia',
                     image_uri:
-                        'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png',
+                        'https://res.cloudinary.com/dt1dn773q/image/upload/v1743853830/ncfhrexcmfvdps1yq1dp.png',
                     attributes: [
                         { trait_type: 'Event', value: 'Eth Taipei 2025' },
                         { trait_type: 'Sponser', value: 'Polygon' },
@@ -170,7 +175,7 @@ export default function VerticalLinearStepper({
                         <img src={image} alt="Captured Screenshot" />
                         <img
                             src={
-                                'https://res.cloudinary.com/dt1dn773q/image/upload/v1743802649/emnbpg6lauygpeb2ocyd.png'
+                                'https://res.cloudinary.com/dt1dn773q/image/upload/v1743853830/ncfhrexcmfvdps1yq1dp.png'
                             }
                             alt="Overlay"
                             className="absolute top-0 right-1"
@@ -241,6 +246,29 @@ export default function VerticalLinearStepper({
                                 >
                                     (View on Chain)
                                 </a>
+                                <div className="w-fit  rounded-full border-2 border-[#cbf101 bg-green-100 px-3 text-sm py-1 my-2">
+                                    <TwitterShareButton
+                                        title="Catch the next wave at @polygon / @nodit booths! 🌊 I just snagged my POAP at Eth Taipei 2025 🚀 Let’s make history!"
+                                        hashtags={[
+                                            'EthTaipei2025',
+                                            'POAP',
+                                            'NextWave',
+                                        ]}
+                                        related={[
+                                            '@ETHGlobal',
+                                            '@NoditPlatform',
+                                            '@0xPolygon',
+                                        ]}
+                                        url={`https://zen-pass.vercel.app`}
+                                        className="flex items-center gap-x-2"
+                                    >
+                                        Share on Twitter{' '}
+                                        <TwitterIcon
+                                            size={20}
+                                            className="rounded-full"
+                                        />
+                                    </TwitterShareButton>
+                                </div>
                             </div>
                         )}
                     </>
