@@ -7,6 +7,7 @@ import {
     TransactionStatusAction,
     TransactionStatusLabel,
 } from '@coinbase/onchainkit/transaction';
+import im from '../../assets/im.png';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
@@ -94,7 +95,7 @@ export default function VerticalLinearStepper({
     const handleARInvokation = async () => {
         setShowAR(true);
         const caller = await fetch(
-            'https://nft-pinata-service.onrender.com/create-nft',
+            'https://nftpinataservice-production.up.railway.app/create-nft',
             {
                 method: 'POST',
                 headers: {
@@ -127,7 +128,7 @@ export default function VerticalLinearStepper({
     };
 
     React.useEffect(() => {
-        if (activeStep == 1) {
+        if (activeStep === 1) {
             validateUserCoordinates();
         }
         if (activeStep === 2) {
@@ -150,6 +151,7 @@ export default function VerticalLinearStepper({
             );
         }
     }, []);
+
     return (
         <>
             <Box sx={{ maxWidth: 400 }}>
@@ -216,6 +218,11 @@ export default function VerticalLinearStepper({
                                 >
                                     (View on Chain)
                                 </a>
+                                <img
+                                    src={im}
+                                    alt="userImage"
+                                    className="py-3"
+                                />
                                 <div className="w-fit  rounded-full border-2 border-[#cbf101 bg-green-100 px-3 text-sm py-1 my-2">
                                     <TwitterShareButton
                                         title="Catch the next wave at @polygon / @nodit booths! 🌊 I just snagged my POAP at Eth Taipei 2025 🚀 Let’s make history!"
@@ -246,7 +253,7 @@ export default function VerticalLinearStepper({
                         )}
                     </>
                 )}
-                <div>Push notification</div>
+
                 {activeStep === steps.length && (
                     <Paper square elevation={0} sx={{ p: 3 }}>
                         <Typography>

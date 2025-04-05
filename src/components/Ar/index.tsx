@@ -92,21 +92,21 @@ const ArComponent = ({
                             setImage(imageUrl);
                             setIsArOpen(false);
                             toast.dismiss('Physical footprints pushed onchain');
-                            const d = new Blob([blob], {
-                                type: 'image/png',
-                            });
-                            const file = blobToFile(d, 'image.png');
-                            const formData = new FormData();
-                            formData.append('file', file);
-                            const res = await fetch(
-                                'https://aiprocessor-production.up.railway.app/analyze-image-anime',
-                                {
-                                    method: 'POST',
-                                    body: formData,
-                                }
-                            );
-                            const data = await res.json();
-                            setUserImage(data.result);
+                            // const d = new Blob([blob], {
+                            //     type: 'image/png',
+                            // });
+                            // const file = blobToFile(d, 'image.png');
+                            // const formData = new FormData();
+                            // formData.append('file', file);
+                            // const res = await fetch(
+                            //     'https://aiprocessor-production.up.railway.app/analyze-image-pixel-art',
+                            //     {
+                            //         method: 'POST',
+                            //         body: formData,
+                            //     }
+                            // );
+                            // const data = await res.json();
+                            // setUserImage(data.result);
                         }
                     });
                 })

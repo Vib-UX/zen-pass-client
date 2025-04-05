@@ -6,7 +6,9 @@ import { useState } from 'react';
 export default function NotificationPanel() {
     const [open, setOpen] = useState(false);
     const fetchNotifications = async () => {
-        const res = await fetch('https://nodit-server.onrender.com/webhook');
+        const res = await fetch(
+            'https://nodit-server-production.up.railway.app/webhook'
+        );
 
         const data = await res.json();
         return data;
