@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import WhirlpoolLoader from '../ui/WhirlpoolLoader';
+import { blobToFile } from '../../lib/helper';
 
 const WebcamBackground = () => {
     return (
@@ -71,10 +72,8 @@ const ArComponent = ({
 }) => {
     const [isNftEnabled, setIsNftEnabled] = useState(false);
     const [isNftLoading, setIsNftLoading] = useState(false);
-
     const captureScreenshot = () => {
         const element = document.getElementById('capture-area');
-
         if (element) {
             html2canvas(element)
                 .then((canvas) => {
@@ -82,8 +81,12 @@ const ArComponent = ({
                         if (blob) {
                             const imageUrl = URL.createObjectURL(blob);
                             setImage(imageUrl);
+                            const d = new Blob([blob], {
+                                type: 'image/png',
+                            });
+                            const file = blobToFile(d, 'image.png');
                             const formData = new FormData();
-                            formData.append('file', imageUrl);
+                            formData.append('file', file);
                             const res = await fetch(
                                 'https://aiprocessor-production.up.railway.app/analyze-image',
                                 {
