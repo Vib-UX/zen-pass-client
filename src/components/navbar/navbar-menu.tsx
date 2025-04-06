@@ -165,19 +165,6 @@ function Navbar({ className }: { className?: string }) {
     const [active, setActive] = useState<string | null>(null);
 
     const { name } = useGlobalStorage();
-    const handleVerify = async (proof: ISuccessResult) => {
-        const res = await fetch('http://localhost:3001/verify', {
-            // route to your backend will depend on implementation
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(proof),
-        });
-        if (!res.ok) {
-            throw new Error('Verification failed.');
-        }
-    };
     const onSuccess = () => {
         window.location.href = '/events';
     };
