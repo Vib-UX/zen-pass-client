@@ -172,7 +172,7 @@ export default function VerticalLinearStepper({
                         </Step>
                     ))}
                 </Stepper>
-                {activeStep === 0 && (
+                {activeStep === 2 && (
                     <>
                         <button
                             onClick={handleTransaction}
@@ -200,7 +200,7 @@ export default function VerticalLinearStepper({
                                 )}
                                 <div className="w-fit  rounded-full border-2 border-[#cbf101 bg-green-100 px-3 text-sm py-1 my-2">
                                     <TwitterShareButton
-                                        title="Catch the next wave at @polygon / @nodit booths! 🌊 I just snagged my POAP at Eth Taipei 2025 🚀 Let’s make history!"
+                                        title="Catch the next wave at @worldcoin booths! 🌊 I just snagged my POAP at Eth Taipei 2025 🚀 Let’s make history!"
                                         hashtags={[
                                             'EthTaipei2025',
                                             'POAP',
@@ -208,8 +208,7 @@ export default function VerticalLinearStepper({
                                         ]}
                                         related={[
                                             '@ETHGlobal',
-                                            '@NoditPlatform',
-                                            '@0xPolygon',
+                                            '@worldcoin'
                                         ]}
                                         url={
                                             userImage ||
