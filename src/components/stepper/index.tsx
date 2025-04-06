@@ -213,7 +213,7 @@ export default function VerticalLinearStepper({
                                         ]}
                                         url={
                                             userImage ||
-                                            'https://zen-pass.vercel.app'
+                                            'https://zen-pass-world-id.vercel.app'
                                         }
                                         className="flex items-center gap-x-2"
                                     >
