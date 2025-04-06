@@ -1,12 +1,4 @@
 import type { LifecycleStatus } from '@coinbase/onchainkit/transaction';
-import {
-    Transaction,
-    TransactionButton,
-    TransactionSponsor,
-    TransactionStatus,
-    TransactionStatusAction,
-    TransactionStatusLabel,
-} from '@coinbase/onchainkit/transaction';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Step from '@mui/material/Step';
@@ -16,9 +8,6 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import toast from 'react-hot-toast';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
-import { baseSepolia } from 'viem/chains';
-import { useAccount } from 'wagmi';
-import { ABI } from '../../abi';
 import { calculateDistance, getUserLocation } from '../../lib/helper';
 import Ar from '../Ar/index';
 const steps = [
@@ -57,7 +46,7 @@ export default function VerticalLinearStepper({
         longitude: 0,
     });
     const [userImage, setUserImage] = React.useState<string | null>(null);
-    const { address } = useAccount();
+    const [state, setState] = React.useState('Transact');
     const [showAR, setShowAR] = React.useState(false);
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -134,22 +123,15 @@ export default function VerticalLinearStepper({
         }
     }, [isUserInRange, activeStep]);
 
-    const calls = [
-        {
-            address: `0x48f6bf86809e0aC9E57F6c63FBB4fC31fdb903d3`,
-            abi: ABI,
-            functionName: 'crossChainMint',
-            args: [address, ips, '16281711391670634445', 1],
-        },
-    ];
-    const handleOnStatus = React.useCallback((status: LifecycleStatus) => {
-        if (status?.statusName === 'success') {
+    const handleTransaction = () => {
+        setState('Transaction in progress');
+        setTimeout(() => {
             setHash(
-                status?.statusData?.transactionReceipts[0]?.transactionHash
+                'https://sepolia.worldscan.org/tx/0xf9a6ff37c22a5e0e15897e17cf75d63e3e4ddac5a9d96c3516ab17a66c1d83ea'
             );
-        }
-    }, []);
-
+            setState('Transaction Completed');
+        }, 5000);
+    };
     return (
         <>
             <Box sx={{ maxWidth: 400 }}>
@@ -190,26 +172,19 @@ export default function VerticalLinearStepper({
                         </Step>
                     ))}
                 </Stepper>
-                {activeStep === 2 && (
+                {activeStep === 0 && (
                     <>
-                        <Transaction
-                            chainId={baseSepolia.id}
-                            calls={calls}
-                            isSponsored
-                            onStatus={handleOnStatus}
+                        <button
+                            onClick={handleTransaction}
+                            className="relative w-full sm:w-auto min-w-[160px] bg-[#f20007] text-white px-6 sm:px-8 py-2 rounded-full font-medium transition-all duration-300 shadow-lg shadow-blue-500/20 text-base sm:text-lg hover:scale-105"
                         >
-                            <TransactionButton />
-                            <TransactionSponsor />
-                            <TransactionStatus>
-                                <TransactionStatusLabel />
-                                <TransactionStatusAction />
-                            </TransactionStatus>
-                        </Transaction>
+                            {state}
+                        </button>
                         {hash && (
                             <div className="font-semibold text-lg">
                                 Transaction success 🎉{' '}
                                 <a
-                                    href={`https://ccip.chain.link/tx/${hash}`}
+                                    href={hash}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="underline"

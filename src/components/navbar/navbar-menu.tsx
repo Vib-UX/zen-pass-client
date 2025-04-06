@@ -7,6 +7,12 @@ import {
     Name,
 } from '@coinbase/onchainkit/identity';
 import {
+    IDKitWidget,
+    VerificationLevel,
+    ISuccessResult,
+} from '@worldcoin/idkit';
+import wid from '../../assets/wold.svg';
+import {
     ConnectWallet,
     Wallet,
     WalletDropdown,
@@ -15,12 +21,10 @@ import {
     WalletDropdownFundLink,
     WalletDropdownLink,
 } from '@coinbase/onchainkit/wallet';
-import { GoogleLogin } from '@react-oauth/google';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bgCol from '../../assets/bg-col.png';
-import { cn } from '../../lib/utils';
 import useGlobalStorage from '../../store';
 import BurgerMenu from '../Burger';
 import NotificationPanel from '../notification';
@@ -159,31 +163,24 @@ export function NavbarDemo() {
 
 function Navbar({ className }: { className?: string }) {
     const [active, setActive] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const { setEmail, setName } = useGlobalStorage();
 
-    const handleGoogleLogin = async (credentialResponse: any) => {
-        const idToken = credentialResponse.credential;
-        const userInfo = await fetchUserDetails(idToken);
-        console.log(userInfo);
-        setEmail(userInfo.email);
-        setName(userInfo.given_name);
-        navigate('/events');
-    };
-
-    const fetchUserDetails = async (idToken: string) => {
-        try {
-            const response = await fetch(
-                `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${idToken}`
-            );
-            const userData = await response.json();
-            return userData;
-        } catch (error) {
-            console.error('Error fetching user details:', error);
-            return null;
+    const { name } = useGlobalStorage();
+    const handleVerify = async (proof: ISuccessResult) => {
+        const res = await fetch('http://localhost:3001/verify', {
+            // route to your backend will depend on implementation
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(proof),
+        });
+        if (!res.ok) {
+            throw new Error('Verification failed.');
         }
     };
-    const { name } = useGlobalStorage();
+    const onSuccess = () => {
+        window.location.href = '/events';
+    };
     return (
         <div className="z-40 relative">
             <Menu setActive={setActive}>
@@ -195,18 +192,27 @@ function Navbar({ className }: { className?: string }) {
                 <div className="relative z-30">
                     {window.location.pathname === '/' ? (
                         <button className="inline-flex h-10 sm:h-12 animate-shimmer items-center justify-center rounded-full border border-slate-800 bg-[#f20007] bg-[length:200%_100%] px-6 sm:px-8 text-sm sm:text-base font-medium text-white transition-all duration-300 hover:scale-105 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                            Get Started
-                            <div className="opacity-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
-                                <GoogleLogin
-                                    onSuccess={handleGoogleLogin}
-                                    theme="filled_black"
-                                    size="large"
-                                    shape="pill"
-                                    text="signin_with"
-                                    locale="en"
-                                    useOneTap
-                                />
-                            </div>
+                            <IDKitWidget
+                                app_id="app_staging_14b3e27a485c78c258988d73c899056a" // obtained from the Developer Portal
+                                action="verfication" // obtained from the Developer Portal
+                                onSuccess={onSuccess} // callback when the modal is closed
+                                verification_level={VerificationLevel.Device}
+                            >
+                                {({ open }) => (
+                                    // This is the button that will open the IDKit modal
+                                    <button
+                                        onClick={open}
+                                        className="flex items-center justify-center gap-x-2"
+                                    >
+                                        Verify with
+                                        <img
+                                            src={wid}
+                                            alt="wid"
+                                            className="size-14"
+                                        />{' '}
+                                    </button>
+                                )}
+                            </IDKitWidget>
                         </button>
                     ) : (
                         <div className="flex text-black items-center relative z-10">
